@@ -1,195 +1,225 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>EmojiWall 🎨</title>
-  <meta name="theme-color" content="#0f0f14" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="manifest" href="#" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+  <title>EmojiWall</title>
+  <meta name="theme-color" content="#0f0f14"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="EmojiWall"/>
+  <link id="manifestLink" rel="manifest"/>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-    :root {
-      --bg:#0f0f14;--surface:#1a1a24;--surface2:#22222f;
-      --accent:#7c6af7;--accent2:#f76ac8;--text:#f0eeff;--muted:#6b6880;--radius:16px;
-    }
+    :root{--bg:#0f0f14;--sur:#1a1a24;--sur2:#22222f;--acc:#7c6af7;--acc2:#f76ac8;--txt:#f0eeff;--mut:#6b6880;--r:16px;}
     *{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100dvh;overflow-x:hidden;}
-    header{display:flex;align-items:center;gap:10px;padding:20px 20px 10px;background:linear-gradient(180deg,#13131e 0%,transparent 100%);}
-    header h1{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    header span{font-size:1.6rem;}
-    .main{display:flex;flex-direction:column;gap:0;padding-bottom:110px;}
+    body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100dvh;overflow-x:hidden;}
+
+    /* HEADER */
+    header{display:flex;align-items:center;gap:10px;padding:18px 16px 10px;background:linear-gradient(180deg,#13131e,transparent);}
+    header h1{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex:1;}
+    .install-btn{display:none;align-items:center;gap:6px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:20px;padding:7px 14px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;white-space:nowrap;}
+    .install-btn.show{display:flex;}
+    .install-btn:active{opacity:.8;}
+
+    .main{display:flex;flex-direction:column;gap:0;padding-bottom:130px;}
 
     /* PREVIEW */
-    .preview-wrap{display:flex;justify-content:center;align-items:center;padding:16px 20px 20px;position:relative;}
-    .phone-frame{position:relative;width:180px;border-radius:36px;border:3px solid #2d2d3a;box-shadow:0 0 0 1px #111,0 24px 60px rgba(0,0,0,.7),0 0 40px rgba(124,106,247,.15);overflow:hidden;background:#000;}
-    .phone-notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:50px;height:10px;background:rgba(0,0,0,.8);border-radius:8px;z-index:10;}
-    #previewCanvas{display:block;width:100%;border-radius:34px;}
-    .preview-actions{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;}
-    .icon-btn{width:40px;height:40px;border-radius:50%;background:var(--surface2);border:1px solid #333;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .2s;}
-    .icon-btn:active{transform:scale(.9);background:var(--accent);}
-    .render-badge{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:rgba(124,106,247,.9);color:#fff;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;display:none;font-family:'Syne',sans-serif;letter-spacing:.05em;}
+    .preview-wrap{display:flex;justify-content:center;align-items:center;padding:14px 20px 18px;position:relative;}
+    .phone-frame{position:relative;border-radius:36px;border:3px solid #2d2d3a;box-shadow:0 0 0 1px #111,0 20px 50px rgba(0,0,0,.7),0 0 36px rgba(124,106,247,.15);overflow:hidden;background:#000;}
+    .phone-notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:46px;height:9px;background:rgba(0,0,0,.85);border-radius:8px;z-index:10;}
+    #previewCanvas{display:block;width:100%;border-radius:33px;}
+    .preview-actions{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;}
+    .icon-btn{width:40px;height:40px;border-radius:50%;background:var(--sur2);border:1px solid #333;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.05rem;transition:all .2s;}
+    .icon-btn:active{transform:scale(.88);background:var(--acc);}
+    .render-badge{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(124,106,247,.92);color:#fff;font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:20px;display:none;white-space:nowrap;}
     .render-badge.show{display:block;}
 
     /* PANELS */
-    .panel{margin:0 16px 12px;background:var(--surface);border-radius:var(--radius);border:1px solid #2a2a3a;overflow:hidden;}
-    .panel-header{display:flex;align-items:center;gap:8px;padding:14px 16px;cursor:pointer;user-select:none;}
-    .panel-header .label{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);flex:1;}
-    .panel-header .ico{font-size:1.1rem;}.panel-header .chevron{color:var(--muted);transition:transform .2s;font-size:.75rem;}
-    .panel-header.open .chevron{transform:rotate(180deg);}
-    .panel-body{padding:0 16px 16px;display:none;}.panel-body.open{display:block;}
+    .panel{margin:0 14px 10px;background:var(--sur);border-radius:var(--r);border:1px solid #252535;overflow:hidden;}
+    .ph{display:flex;align-items:center;gap:8px;padding:13px 15px;cursor:pointer;user-select:none;}
+    .ph .lbl{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);flex:1;}
+    .ph .ico{font-size:1.05rem;}.ph .chv{color:var(--mut);transition:transform .2s;font-size:.72rem;}
+    .ph.open .chv{transform:rotate(180deg);}
+    .pb{padding:0 14px 14px;display:none;}.pb.open{display:block;}
 
-    /* EMOJIS */
-    .emoji-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-    .emoji-chip{background:var(--surface2);border:1.5px solid #333;border-radius:12px;padding:6px 10px;font-size:1.4rem;cursor:pointer;position:relative;transition:all .15s;}
-    .emoji-chip:active{transform:scale(.9);}
-    .emoji-chip .remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#e04060;border-radius:50%;font-size:.55rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;}
-    .emoji-input-row{display:flex;gap:8px;}
-    .emoji-input{flex:1;background:var(--surface2);border:1.5px solid #333;border-radius:12px;padding:10px 14px;font-size:1.3rem;color:var(--text);outline:none;width:0;}
-    .emoji-input:focus{border-color:var(--accent);}
-    .add-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:10px 18px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;}
+    /* EMOJI CHIPS */
+    .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px;}
+    .chip{background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:5px 9px;font-size:1.35rem;cursor:pointer;position:relative;transition:all .15s;}
+    .chip:active{transform:scale(.88);}
+    .chip .rm{position:absolute;top:-6px;right:-6px;width:17px;height:17px;background:#d03050;border-radius:50%;font-size:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;}
+    .ei-row{display:flex;gap:7px;}
+    .ei{flex:1;background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:9px 13px;font-size:1.25rem;color:var(--txt);outline:none;width:0;}
+    .ei:focus{border-color:var(--acc);}
+    .add-btn{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:11px;padding:9px 16px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;}
     .add-btn:active{opacity:.7;}
-    .quick-emojis{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-    .quick-emoji{font-size:1.5rem;padding:4px 6px;background:var(--surface2);border-radius:8px;cursor:pointer;}
-    .quick-emoji:active{transform:scale(1.2);}
+
+    /* EMOJIPEDIA */
+    .ep-cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:8px;}
+    .ep-cats::-webkit-scrollbar{display:none;}
+    .ep-cat{background:var(--sur2);border:1.5px solid #333;border-radius:20px;padding:5px 12px;font-size:.72rem;font-weight:600;color:var(--mut);cursor:pointer;white-space:nowrap;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.04em;}
+    .ep-cat.active{background:rgba(124,106,247,.2);border-color:var(--acc);color:var(--txt);}
+    .ep-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-bottom:10px;min-height:120px;}
+    .ep-em{font-size:1.5rem;padding:6px;text-align:center;cursor:pointer;border-radius:8px;transition:all .12s;background:var(--sur2);}
+    .ep-em:active{transform:scale(1.25);background:rgba(124,106,247,.25);}
+    .ep-em.selected{background:rgba(124,106,247,.35);border:1.5px solid var(--acc);}
+    .ep-nav{display:flex;align-items:center;justify-content:center;gap:12px;}
+    .ep-pg-btn{background:var(--sur2);border:1.5px solid #333;border-radius:10px;padding:6px 14px;color:var(--txt);font-size:.8rem;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;}
+    .ep-pg-btn:active{background:var(--acc);}
+    .ep-pg-btn:disabled{opacity:.3;pointer-events:none;}
+    .ep-pg-info{font-size:.75rem;color:var(--mut);font-weight:500;}
 
     /* RENDER MODES */
-    .mode-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-    .mode-scroll-wrap::-webkit-scrollbar{display:none;}
-    .mode-scroll{display:flex;gap:10px;padding:4px 2px 8px;width:max-content;}
-    .mode-card{display:flex;flex-direction:column;align-items:center;gap:6px;width:72px;cursor:pointer;}
-    .mode-preview{width:64px;height:64px;border-radius:18px;border:2px solid #2d2d3a;display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative;overflow:hidden;}
-    .mode-preview canvas{display:block;}
-    .mode-card.active .mode-preview{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,247,.25);}
-    .mode-name{font-size:.68rem;font-weight:600;color:var(--muted);font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.04em;text-align:center;}
-    .mode-card.active .mode-name{color:var(--accent);}
-    .mode-options{margin-top:12px;}
-    .mode-opts-section{display:none;}.mode-opts-section.visible{display:block;}
-    .opts-label{font-size:.78rem;color:var(--muted);font-weight:500;margin-bottom:8px;}
-    .color-dots{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
-    .cdot{width:30px;height:30px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .15s;}
-    .cdot.round{border-radius:50%;}
+    .mode-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .mode-wrap::-webkit-scrollbar{display:none;}
+    .mode-row{display:flex;gap:8px;padding:2px 2px 8px;width:max-content;}
+    .mcard{display:flex;flex-direction:column;align-items:center;gap:5px;width:68px;cursor:pointer;}
+    .mpreview{width:60px;height:60px;border-radius:16px;border:2px solid #2d2d3a;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:all .2s;}
+    .mpreview canvas{display:block;}
+    .mcard.active .mpreview{border-color:var(--acc);box-shadow:0 0 0 3px rgba(124,106,247,.22);}
+    .mname{font-size:.65rem;font-weight:600;color:var(--mut);font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.04em;text-align:center;}
+    .mcard.active .mname{color:var(--acc);}
+    .mode-opts{margin-top:10px;}
+    .mopt-sec{display:none;}.mopt-sec.vis{display:block;}
+    .opt-lbl{font-size:.76rem;color:var(--mut);font-weight:500;margin-bottom:7px;}
+    .cdots{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+    .cdot{width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .15s;}
+    .cdot.rnd{border-radius:50%;}
     .cdot.active{border-color:#fff;transform:scale(1.18);}
 
-    /* PATTERN */
-    .pattern-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-    .pattern-btn{background:var(--surface2);border:1.5px solid #333;border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;}
-    .pattern-btn.active{border-color:var(--accent);background:rgba(124,106,247,.15);}
-    .pattern-btn .pico{font-size:1.4rem;display:block;margin-bottom:4px;}
-    .pattern-btn .pname{font-size:.72rem;color:var(--muted);font-weight:500;}
-    .pattern-btn.active .pname{color:var(--text);}
-
     /* SLIDERS */
-    .slider-row{margin-bottom:14px;}
-    .slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-weight:500;}
-    .slider-label span:last-child{color:var(--text);font-weight:600;}
-    input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:var(--surface2);outline:none;}
-    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));cursor:pointer;box-shadow:0 2px 8px rgba(124,106,247,.5);}
+    .srow{margin-bottom:13px;}
+    .slbl{display:flex;justify-content:space-between;font-size:.78rem;color:var(--mut);margin-bottom:7px;font-weight:500;}
+    .slbl span:last-child{color:var(--txt);font-weight:600;}
+    input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:var(--sur2);outline:none;}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));cursor:pointer;box-shadow:0 2px 8px rgba(124,106,247,.5);}
 
     /* COLORS */
-    .color-section{display:flex;flex-direction:column;gap:12px;}
-    .color-swatches{display:flex;flex-wrap:wrap;gap:8px;}
-    .swatch{width:40px;height:40px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all .15s;}
-    .swatch.active{border-color:#fff;transform:scale(1.1);}
-    .color-custom-row{display:flex;gap:10px;align-items:center;}
-    .color-custom-row label{font-size:.8rem;color:var(--muted);font-weight:500;flex:1;}
-    input[type=color]{width:48px;height:36px;border:none;border-radius:10px;padding:2px;background:var(--surface2);cursor:pointer;}
-    .gradient-toggle{display:flex;align-items:center;gap:10px;margin-top:4px;}
-    .toggle-label{font-size:.8rem;color:var(--muted);font-weight:500;flex:1;}
-    .toggle{width:44px;height:26px;background:var(--surface2);border-radius:13px;position:relative;cursor:pointer;border:1.5px solid #333;transition:background .2s;}
-    .toggle.on{background:var(--accent);border-color:var(--accent);}
-    .toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;}
-    .toggle.on::after{left:20px;}
-    .gradient-colors{display:flex;gap:8px;margin-top:8px;}
-    .gradient-colors input[type=color]{flex:1;height:40px;}
+    .csec{display:flex;flex-direction:column;gap:11px;}
+    .swatches{display:flex;flex-wrap:wrap;gap:7px;}
+    .sw{width:38px;height:38px;border-radius:11px;cursor:pointer;border:2px solid transparent;transition:all .15s;}
+    .sw.active{border-color:#fff;transform:scale(1.1);}
+    .ccrow{display:flex;gap:10px;align-items:center;}
+    .ccrow label{font-size:.78rem;color:var(--mut);font-weight:500;flex:1;}
+    input[type=color]{width:46px;height:34px;border:none;border-radius:10px;padding:2px;background:var(--sur2);cursor:pointer;}
+    .gtog{display:flex;align-items:center;gap:10px;margin-top:2px;}
+    .tog-lbl{font-size:.78rem;color:var(--mut);font-weight:500;flex:1;}
+    .tog{width:42px;height:24px;background:var(--sur2);border-radius:12px;position:relative;cursor:pointer;border:1.5px solid #333;transition:background .2s;flex-shrink:0;}
+    .tog.on{background:var(--acc);border-color:var(--acc);}
+    .tog::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;}
+    .tog.on::after{left:20px;}
+    .gcols{display:flex;gap:8px;margin-top:7px;}
+    .gcols input[type=color]{flex:1;height:38px;}
 
-    /* RES */
-    .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    .res-btn{background:var(--surface2);border:1.5px solid #333;border-radius:12px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;}
-    .res-btn.active{border-color:var(--accent);background:rgba(124,106,247,.15);}
-    .res-btn .rname{font-size:.75rem;font-weight:600;color:var(--text);}
-    .res-btn .rdim{font-size:.65rem;color:var(--muted);}
+    /* RESOLUTION */
+    .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+    .rbtn{background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:9px;text-align:center;cursor:pointer;transition:all .2s;}
+    .rbtn.active{border-color:var(--acc);background:rgba(124,106,247,.15);}
+    .rbtn .rn{font-size:.73rem;font-weight:600;color:var(--txt);}
+    .rbtn .rd{font-size:.62rem;color:var(--mut);}
 
-    /* BOTTOM */
-    .bottom-bar{position:fixed;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(0deg,var(--bg) 70%,transparent);display:flex;gap:10px;}
-    .btn-generate{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:16px;padding:16px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 8px 24px rgba(124,106,247,.35);display:flex;align-items:center;justify-content:center;gap:8px;}
-    .btn-generate:active{opacity:.85;transform:scale(.97);}
-    .btn-generate.loading{opacity:.7;pointer-events:none;}
-    .btn-download{background:var(--surface2);border:1.5px solid #333;border-radius:16px;padding:16px 20px;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .2s;}
-    .btn-download:active{background:var(--accent);transform:scale(.97);}
+    /* BOTTOM BAR */
+    .bottom-bar{position:fixed;bottom:0;left:0;right:0;padding:14px 16px 20px;background:linear-gradient(0deg,var(--bg) 65%,transparent);display:flex;flex-direction:column;gap:8px;}
+    .save-btn{width:100%;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:18px;padding:18px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer;box-shadow:0 8px 28px rgba(124,106,247,.4);display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.02em;}
+    .save-btn:active{opacity:.85;transform:scale(.97);}
+    .save-btn.loading{opacity:.7;pointer-events:none;}
+    .bottom-row{display:flex;gap:8px;}
+    .render-btn{flex:1;background:var(--sur2);border:1.5px solid #333;border-radius:14px;padding:13px;color:var(--txt);font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+    .render-btn:active{background:var(--sur);border-color:var(--acc);}
+    .shuffle-btn{background:var(--sur2);border:1.5px solid #333;border-radius:14px;padding:13px 16px;color:var(--txt);font-size:1.1rem;cursor:pointer;}
+    .shuffle-btn:active{background:var(--sur);border-color:var(--acc);}
     .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none;}
-    .btn-generate.loading .spinner{display:block;}
-    .btn-generate.loading .btn-text{display:none;}
+    .save-btn.loading .spinner{display:block;}
+    .save-btn.loading .btn-txt{display:none;}
     @keyframes spin{to{transform:rotate(360deg);}}
-    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--surface2);border:1px solid var(--accent);border-radius:30px;padding:10px 20px;font-size:.85rem;font-weight:600;color:var(--text);z-index:999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--sur2);border:1px solid var(--acc);border-radius:30px;padding:10px 20px;font-size:.83rem;font-weight:600;color:var(--txt);z-index:999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
     .toast.show{transform:translateX(-50%) translateY(0);}
   </style>
 </head>
 <body>
-<header><span>🎨</span><h1>EmojiWall</h1></header>
+<header>
+  <span>🎨</span>
+  <h1>EmojiWall</h1>
+  <button class="install-btn" id="installBtn" onclick="installPWA()">📲 Instalar App</button>
+</header>
+
 <div class="main">
 
+  <!-- PREVIEW -->
   <div class="preview-wrap">
     <div class="phone-frame" id="phoneFrame">
       <div class="phone-notch"></div>
       <canvas id="previewCanvas"></canvas>
     </div>
     <div class="preview-actions">
-      <div class="icon-btn" onclick="shufflePositions()">🔀</div>
-      <div class="icon-btn" onclick="cyclePattern()">⟳</div>
+      <div class="icon-btn" onclick="shufflePositions()" title="Baralhar">🔀</div>
+      <div class="icon-btn" onclick="cyclePattern()" title="Próximo padrão">⟳</div>
     </div>
     <div class="render-badge" id="renderBadge">A carregar…</div>
   </div>
 
   <!-- EMOJIS -->
   <div class="panel">
-    <div class="panel-header open" onclick="togglePanel(this)">
-      <span class="ico">😊</span><span class="label">Emojis</span><span class="chevron">▼</span>
+    <div class="ph open" onclick="togglePanel(this)">
+      <span class="ico">😊</span><span class="lbl">Emojis selecionados</span><span class="chv">▼</span>
     </div>
-    <div class="panel-body open">
-      <div class="emoji-chips" id="emojiChips"></div>
-      <div class="emoji-input-row">
-        <input class="emoji-input" id="emojiInput" type="text" placeholder="Cola um emoji aqui…" maxlength="8"/>
+    <div class="pb open">
+      <div class="chips" id="chips"></div>
+      <div class="ei-row">
+        <input class="ei" id="emojiInput" type="text" placeholder="Cola um emoji aqui…" maxlength="8"/>
         <button class="add-btn" onclick="addEmoji()">+ Add</button>
       </div>
-      <div class="quick-emojis" id="quickEmojis"></div>
+    </div>
+  </div>
+
+  <!-- EMOJIPEDIA -->
+  <div class="panel">
+    <div class="ph open" onclick="togglePanel(this)">
+      <span class="ico">📖</span><span class="lbl">Emojipedia</span><span class="chv">▼</span>
+    </div>
+    <div class="pb open">
+      <div class="ep-cats" id="epCats"></div>
+      <div class="ep-grid" id="epGrid"></div>
+      <div class="ep-nav">
+        <button class="ep-pg-btn" id="prevPg" onclick="epPage(-1)">◀ Anterior</button>
+        <span class="ep-pg-info" id="pgInfo">1 / 1</span>
+        <button class="ep-pg-btn" id="nextPg" onclick="epPage(1)">Próxima ▶</button>
+      </div>
     </div>
   </div>
 
   <!-- MODO DE VISUALIZAÇÃO -->
   <div class="panel">
-    <div class="panel-header open" onclick="togglePanel(this)">
-      <span class="ico">🖼️</span><span class="label">Modo de visualização</span><span class="chevron">▼</span>
+    <div class="ph open" onclick="togglePanel(this)">
+      <span class="ico">🖼️</span><span class="lbl">Modo de visualização</span><span class="chv">▼</span>
     </div>
-    <div class="panel-body open">
-      <div class="mode-scroll-wrap"><div class="mode-scroll" id="modeScroll"></div></div>
-      <div class="mode-options">
-        <!-- NEON -->
-        <div class="mode-opts-section" id="opts-neon">
-          <div class="opts-label">Cor do brilho</div>
-          <div class="color-dots" id="neonColorDots"></div>
-          <div class="slider-row">
-            <div class="slider-label"><span>Intensidade</span><span id="neonBlurVal">30</span></div>
-            <input type="range" id="neonBlurSlider" min="5" max="80" value="30" oninput="onNeonBlur()">
+    <div class="pb open">
+      <div class="mode-wrap"><div class="mode-row" id="modeRow"></div></div>
+      <div class="mode-opts">
+        <div class="mopt-sec" id="opts-neon">
+          <div class="opt-lbl">Cor do brilho</div>
+          <div class="cdots" id="neonDots"></div>
+          <div class="srow">
+            <div class="slbl"><span>Intensidade</span><span id="neonBlurV">30</span></div>
+            <input type="range" id="neonBlurS" min="5" max="80" value="30" oninput="onNeonBlur()">
           </div>
         </div>
-        <!-- SILHUETA -->
-        <div class="mode-opts-section" id="opts-silhouette">
-          <div class="opts-label">Cor da silhueta</div>
-          <div class="color-dots" id="silColorDots"></div>
-          <div class="color-custom-row" style="margin-top:4px">
-            <label>Cor personalizada</label>
-            <input type="color" id="silCustomColor" value="#ffffff" onchange="setSilColor(this.value,null)">
+        <div class="mopt-sec" id="opts-silhouette">
+          <div class="opt-lbl">Cor da silhueta</div>
+          <div class="cdots" id="silDots"></div>
+          <div class="ccrow" style="margin-top:4px">
+            <label>Personalizada</label>
+            <input type="color" id="silCustom" value="#ffffff" onchange="setSilColor(this.value,null)">
           </div>
         </div>
-        <!-- CONTORNO -->
-        <div class="mode-opts-section" id="opts-outline">
-          <div class="opts-label">Cor do contorno</div>
-          <div class="color-dots" id="outlineColorDots"></div>
-          <div class="slider-row" style="margin-top:10px">
-            <div class="slider-label"><span>Espessura</span><span id="outlineWVal">3px</span></div>
-            <input type="range" id="outlineWSlider" min="1" max="12" value="3" oninput="onOutlineW()">
+        <div class="mopt-sec" id="opts-outline">
+          <div class="opt-lbl">Cor do contorno</div>
+          <div class="cdots" id="outlineDots"></div>
+          <div class="srow" style="margin-top:10px">
+            <div class="slbl"><span>Espessura</span><span id="outlineWV">3px</span></div>
+            <input type="range" id="outlineWS" min="1" max="12" value="3" oninput="onOutlineW()">
           </div>
         </div>
       </div>
@@ -198,48 +228,54 @@
 
   <!-- PADRÃO -->
   <div class="panel">
-    <div class="panel-header open" onclick="togglePanel(this)">
-      <span class="ico">🔲</span><span class="label">Padrão</span><span class="chevron">▼</span>
+    <div class="ph open" onclick="togglePanel(this)">
+      <span class="ico">🔲</span><span class="lbl">Padrão</span><span class="chv">▼</span>
     </div>
-    <div class="panel-body open">
-      <div class="pattern-grid" id="patternGrid">
-        <div class="pattern-btn active" data-pattern="grid" onclick="selectPattern(this)"><span class="pico">⬛⬛<br>⬛⬛</span><span class="pname">Grelha</span></div>
-        <div class="pattern-btn" data-pattern="offset" onclick="selectPattern(this)"><span class="pico">⬜⬛<br>⬛⬜</span><span class="pname">Desfasado</span></div>
-        <div class="pattern-btn" data-pattern="random" onclick="selectPattern(this)"><span class="pico">✦ ✦<br> ✦ ✦</span><span class="pname">Aleatório</span></div>
-        <div class="pattern-btn" data-pattern="diagonal" onclick="selectPattern(this)"><span class="pico">↗ ↗<br>↗ ↗</span><span class="pname">Diagonal</span></div>
-        <div class="pattern-btn" data-pattern="hex" onclick="selectPattern(this)"><span class="pico">⬡⬡<br> ⬡⬡</span><span class="pname">Hexagonal</span></div>
-        <div class="pattern-btn" data-pattern="spiral" onclick="selectPattern(this)"><span class="pico">🌀</span><span class="pname">Espiral</span></div>
+    <div class="pb open">
+      <div class="pattern-grid" id="patGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;">
+        <div class="pat-btn active" data-p="grid" onclick="selPat(this)" style="background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:1.3rem;margin-bottom:3px">⬛⬛<br>⬛⬛</div><div style="font-size:.7rem;color:var(--mut);font-weight:500">Grelha</div></div>
+        <div class="pat-btn" data-p="offset" onclick="selPat(this)" style="background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:1.3rem;margin-bottom:3px">⬜⬛<br>⬛⬜</div><div style="font-size:.7rem;color:var(--mut);font-weight:500">Desfasado</div></div>
+        <div class="pat-btn" data-p="random" onclick="selPat(this)" style="background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:1.3rem;margin-bottom:3px">✦ ✦<br> ✦ ✦</div><div style="font-size:.7rem;color:var(--mut);font-weight:500">Aleatório</div></div>
+        <div class="pat-btn" data-p="diagonal" onclick="selPat(this)" style="background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:1.3rem;margin-bottom:3px">↗ ↗<br>↗ ↗</div><div style="font-size:.7rem;color:var(--mut);font-weight:500">Diagonal</div></div>
+        <div class="pat-btn" data-p="hex" onclick="selPat(this)" style="background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:1.3rem;margin-bottom:3px">⬡⬡<br> ⬡⬡</div><div style="font-size:.7rem;color:var(--mut);font-weight:500">Hexagonal</div></div>
+        <div class="pat-btn" data-p="spiral" onclick="selPat(this)" style="background:var(--sur2);border:1.5px solid #333;border-radius:11px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:1.3rem;margin-bottom:3px">🌀</div><div style="font-size:.7rem;color:var(--mut);font-weight:500">Espiral</div></div>
       </div>
     </div>
   </div>
 
   <!-- TAMANHO -->
   <div class="panel">
-    <div class="panel-header open" onclick="togglePanel(this)">
-      <span class="ico">🔠</span><span class="label">Tamanho & Espaçamento</span><span class="chevron">▼</span>
+    <div class="ph open" onclick="togglePanel(this)">
+      <span class="ico">🔠</span><span class="lbl">Tamanho & Espaçamento</span><span class="chv">▼</span>
     </div>
-    <div class="panel-body open">
-      <div class="slider-row"><div class="slider-label"><span>Tamanho base</span><span id="sizeVal">80px</span></div><input type="range" id="sizeSlider" min="30" max="180" value="80" oninput="updateSliders()"></div>
-      <div class="slider-row"><div class="slider-label"><span>Variação de tamanho</span><span id="variationVal">40%</span></div><input type="range" id="variationSlider" min="0" max="100" value="40" oninput="updateSliders()"></div>
-      <div class="slider-row"><div class="slider-label"><span>Espaçamento</span><span id="spacingVal">1.4×</span></div><input type="range" id="spacingSlider" min="100" max="250" value="140" oninput="updateSliders()"></div>
-      <div class="slider-row"><div class="slider-label"><span>Rotação aleatória</span><span id="rotationVal">30°</span></div><input type="range" id="rotationSlider" min="0" max="180" value="30" oninput="updateSliders()"></div>
-      <div class="slider-row"><div class="slider-label"><span>Opacidade</span><span id="opacityVal">100%</span></div><input type="range" id="opacitySlider" min="20" max="100" value="100" oninput="updateSliders()"></div>
+    <div class="pb open">
+      <div class="srow"><div class="slbl"><span>Tamanho base</span><span id="sizeV">80px</span></div><input type="range" id="sizeS" min="30" max="180" value="80" oninput="updSliders()"></div>
+      <div class="srow"><div class="slbl"><span>Variação de tamanho</span><span id="varV">40%</span></div><input type="range" id="varS" min="0" max="100" value="40" oninput="updSliders()"></div>
+      <div class="srow"><div class="slbl"><span>Espaçamento</span><span id="spcV">1.4×</span></div><input type="range" id="spcS" min="100" max="250" value="140" oninput="updSliders()"></div>
+      <div class="srow"><div class="slbl"><span>Rotação aleatória</span><span id="rotV">30°</span></div><input type="range" id="rotS" min="0" max="180" value="30" oninput="updSliders()"></div>
+      <div class="srow"><div class="slbl"><span>Opacidade</span><span id="opV">100%</span></div><input type="range" id="opS" min="20" max="100" value="100" oninput="updSliders()"></div>
     </div>
   </div>
 
   <!-- COR DE FUNDO -->
   <div class="panel">
-    <div class="panel-header open" onclick="togglePanel(this)">
-      <span class="ico">🎨</span><span class="label">Cor de Fundo</span><span class="chevron">▼</span>
+    <div class="ph open" onclick="togglePanel(this)">
+      <span class="ico">🎨</span><span class="lbl">Cor de Fundo</span><span class="chv">▼</span>
     </div>
-    <div class="panel-body open">
-      <div class="color-section">
-        <div class="color-swatches" id="swatches"></div>
-        <div class="color-custom-row"><label>Cor personalizada</label><input type="color" id="customColor" value="#1a1a2e" onchange="setCustomColor(this.value)"></div>
-        <div class="gradient-toggle"><span class="toggle-label">Gradiente de fundo</span><div class="toggle" id="gradientToggle" onclick="toggleGradient()"></div></div>
-        <div class="gradient-colors" id="gradientColors" style="display:none">
-          <input type="color" id="gradColor1" value="#1a1a2e" onchange="render()">
-          <input type="color" id="gradColor2" value="#4a0080" onchange="render()">
+    <div class="pb open">
+      <div class="csec">
+        <div class="swatches" id="swatches"></div>
+        <div class="ccrow"><label>Cor personalizada</label><input type="color" id="customColor" value="#1a1a2e" onchange="setCustomColor(this.value)"></div>
+        <div class="gtog"><span class="tog-lbl">Gradiente de fundo</span><div class="tog" id="gradTog" onclick="toggleGrad()"></div></div>
+        <div class="gcols" id="gradCols" style="display:none">
+          <input type="color" id="gc1" value="#1a1a2e" onchange="render()">
+          <input type="color" id="gc2" value="#4a0080" onchange="render()">
         </div>
       </div>
     </div>
@@ -247,378 +283,476 @@
 
   <!-- RESOLUÇÃO -->
   <div class="panel">
-    <div class="panel-header" onclick="togglePanel(this)">
-      <span class="ico">📱</span><span class="label">Resolução</span><span class="chevron">▼</span>
+    <div class="ph" onclick="togglePanel(this)">
+      <span class="ico">📱</span><span class="lbl">Resolução</span><span class="chv">▼</span>
     </div>
-    <div class="panel-body">
+    <div class="pb">
       <div class="res-grid">
-        <div class="res-btn active" data-w="1080" data-h="1920" onclick="selectRes(this)"><div class="rname">FHD</div><div class="rdim">1080 × 1920</div></div>
-        <div class="res-btn" data-w="1440" data-h="3200" onclick="selectRes(this)"><div class="rname">QHD+</div><div class="rdim">1440 × 3200</div></div>
-        <div class="res-btn" data-w="1080" data-h="2400" onclick="selectRes(this)"><div class="rname">FHD+</div><div class="rdim">1080 × 2400</div></div>
-        <div class="res-btn" data-w="720" data-h="1600" onclick="selectRes(this)"><div class="rname">HD+</div><div class="rdim">720 × 1600</div></div>
+        <div class="rbtn active" data-w="1080" data-h="1920" onclick="selRes(this)"><div class="rn">FHD</div><div class="rd">1080 × 1920</div></div>
+        <div class="rbtn" data-w="1440" data-h="3200" onclick="selRes(this)"><div class="rn">QHD+</div><div class="rd">1440 × 3200</div></div>
+        <div class="rbtn" data-w="1080" data-h="2400" onclick="selRes(this)"><div class="rn">FHD+</div><div class="rd">1080 × 2400</div></div>
+        <div class="rbtn" data-w="720" data-h="1600" onclick="selRes(this)"><div class="rn">HD+</div><div class="rd">720 × 1600</div></div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- BOTTOM BAR -->
 <div class="bottom-bar">
-  <button class="btn-generate" onclick="render()" id="genBtn">
-    <span class="btn-text">✨ Gerar Wallpaper</span>
+  <button class="save-btn" id="saveBtn" onclick="exportWallpaper()">
+    <span class="btn-txt">💾 Guardar Wallpaper</span>
     <div class="spinner"></div>
   </button>
-  <button class="btn-download" onclick="downloadWallpaper()">💾</button>
+  <div class="bottom-row">
+    <button class="render-btn" onclick="render()">🔄 Atualizar pré-visualização</button>
+    <button class="shuffle-btn" onclick="shufflePositions()">🔀</button>
+  </div>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────
-const S = {
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const S={
   emojis:['✨','🌸','🦋'], pattern:'grid', mode:'sistema',
-  bgColor:'#1a1a2e', useGradient:false,
-  size:80, variation:40, spacing:140, rotation:30, opacity:100,
-  resW:1080, resH:1920, seed:Math.random(),
-  neonColor:'#7c6af7', neonBlur:30,
-  silColor:'#ffffff', outlineColor:'#ffffff', outlineWidth:3,
+  bgColor:'#1a1a2e', useGrad:false,
+  size:80,variation:40,spacing:140,rotation:30,opacity:100,
+  resW:1080,resH:1920, seed:Math.random(),
+  neonColor:'#7c6af7',neonBlur:30,
+  silColor:'#ffffff',outlineColor:'#ffffff',outlineWidth:3,
 };
 
-const SWATCHES=['#0f0f14','#1a1a2e','#12192c','#0d1b2a','#1e0a1e','#1a0a2e','#0a1a2e','#0a2e1a','#2e0a0a','#1e1e00','#ffffff','#f5f0ff','#fce4ec','#e8f5e9','#e3f2fd','#fff8e1'];
-const QUICK=['⭐','🌟','✨','💫','🌙','☀️','🌈','🦋','🌸','🌺','🍀','🌿','❤️','🧡','💛','💚','💙','💜','🖤','🤍','💎','🔮','🎀','🎵','🦄','🐉','🐱','🐶','🦊','🐸','🍉','🍕','🎃','👾','🚀','🌍'];
+// ══════════════════════════════════════════════
+// EMOJIPEDIA DATA
+// ══════════════════════════════════════════════
+const EP_CATS = {
+  '⭐ Populares': ['✨','⭐','🌟','💫','🎉','🎊','🌈','🦋','🌸','🌺','🍀','❤️','🔥','💯','👑','🎀','💎','🚀','🌙','☀️','🌊','🌿','🦄','🐉','💜','🎵','🎶','🍕','🍉','🎃','👾','🌍','🦊','🐱','🌻','🌷','🫧','🪄','🌠','🦋','💫','🎭','🪩','🫶','🌌','🔮','🪐','🛸','✴️'],
+  '😀 Caras':     ['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','😊','😇','🥰','😍','🤩','😘','😗','😚','😙','🥲','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🥵','🥶','🥴','😵','🤯','🤠','🥳','😎','🤓','🧐','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖'],
+  '👋 Gestos':    ['👋','🤚','🖐️','✋','🖖','👌','🤌','🤏','✌️','🤞','🤟','🤘','🤙','👈','👉','👆','🖕','👇','☝️','👍','👎','✊','👊','🤛','🤜','👏','🙌','👐','🤲','🤝','🙏','✍️','💅','🤳','💪','🦵','🦶','👂','🦻','👃','🧠','🦷','🦴','👀','👁️','👅','👄','🫦','💋'],
+  '🐱 Animais':   ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐔','🐧','🐦','🐤','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🦂','🐢','🐍','🦎','🦕','🦖','🐙','🦑','🦐','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🦦','🦥','🐆','🦁','🐘','🦏','🦛','🦒','🦓','🐃','🐂','🐄','🦌','🐕','🐈','🐓','🐇','🦔'],
+  '🌸 Natureza':  ['🌱','🌿','🍀','🎋','🎍','🍃','🍂','🍁','🌾','🌵','🌴','🌳','🌲','🪵','🌾','🌺','🌸','🌼','🌻','🌹','🥀','💐','🍄','🌊','🌬️','🌀','🌈','⚡','❄️','☃️','⛄','🌙','☀️','🌤️','⛅','🌧️','🌩️','🌨️','🌪️','🌫️','🌊','🌋','🏔️','⛰️','🗻','🏕️','🏖️','🏜️','🏝️','🌅','🌄','🌠','🎑','🌃','🌆','🌇','🌌'],
+  '🍕 Comida':    ['🍎','🍊','🍋','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🫒','🫑','🥦','🥬','🥒','🌶️','🧄','🧅','🥔','🍠','🥐','🥖','🥨','🧀','🥚','🍳','🥞','🧇','🥓','🌭','🍔','🍟','🍕','🌮','🌯','🫔','🥗','🥘','🫕','🍜','🍝','🍛','🍣','🍱','🍤','🦪','🍦','🍧','🍨','🍩','🍪','🎂','🍰','🧁','🍫','🍬','🍭','🍮','🍯','🫖','☕','🧋','🥛','🍺','🍸','🍹','🥂','🥃'],
+  '⚽ Desporto':  ['⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🥏','🎱','🪀','🏓','🏸','🥊','🥋','🥅','⛳','🏹','🎣','🤿','🎿','🛷','🎯','🎲','🎮','🕹️','🎳','🏋️','🤸','🤾','🏌️','🏇','🏊','🤽','🚣','🧗','🚵','🚴','🏆','🥇','🥈','🥉','🎖️','🏅','🎗️'],
+  '🚀 Viagem':    ['🚗','🚕','🚙','🚌','🚎','🏎️','🚑','🚒','🚐','🛻','🚚','🚛','🚜','🛵','🚲','🛴','🛺','🚁','✈️','🛫','🛬','🚀','🛸','🚂','🚃','🚄','🚅','🚆','🚇','🚈','🚉','🚊','🚋','🚍','🚐','🚑','🚒','🚓','🚔','🚕','🚖','🚗','🚘','🚙','🚚','🚛','🚜','🚝','🚞','🚟','🚠','🚡','🚢','⛵','🚤','🛥️','🛳️','🛶','⛽','🚧','⚓','🗺️','🧭','🏔️','🏕️','🏖️','🗼','🗽','🏰','🏯'],
+  '💡 Objetos':   ['💎','🔮','🪄','🎩','🎭','🎪','🎬','🎤','🎧','🎸','🥁','🎹','🎺','🎻','🪗','🎷','🎙️','📻','📺','📷','📸','📹','🎥','📽️','🎞️','📞','📟','📠','📺','📻','🧭','🕰️','⌚','⏰','⏱️','⌛','⏳','📡','🔋','💡','🔦','🕯️','💰','💴','💵','💶','💷','💸','🪙','💳','🔑','🗝️','🔐','🔒','🔓','🔨','⚒️','🛠️','⚙️','🔩','🪛','🔧','🪝','🧲','💣','🪤','🔮','🧿','🪬','🗿'],
+  '💜 Símbolos':  ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❤️‍🔥','❤️‍🩹','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☯️','✡️','🕉️','☪️','🔯','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','⛎','🔀','🔁','🔂','▶️','⏩','⏭️','⏯️','◀️','⏪','⏮️','🔼','⏫','🔽','⏬','⏸️','⏹️','⏺️','🎦','🔅','🔆','📶','📳','📴','📵','📳','✅','❌','❎','🔴','🟠','🟡','🟢','🔵','🟣','⚫','⚪','🟤','🔸','🔹','🔶','🔷','🔺','🔻','💠','🔘','🔳','🔲'],
+};
 
-// ── MODES ──────────────────────────────────────────────
-const MODES = [
-  { id:'sistema',    name:'Sistema',   bg:'#1a1a2e', info:'Nativo do dispositivo' },
-  { id:'twemoji',   name:'Twemoji',   bg:'#dde4ff', info:'Estilo Twitter/X' },
-  { id:'mono',      name:'Mono',      bg:'#111',    info:'Escala de cinzas' },
-  { id:'sepia',     name:'Sépia',     bg:'#1a1208', info:'Vintage' },
-  { id:'neon',      name:'Neon',      bg:'#04040e', info:'Brilho colorido' },
-  { id:'silhouette',name:'Silhueta',  bg:'#080808', info:'Forma sólida' },
-  { id:'outline',   name:'Contorno',  bg:'#060606', info:'Só a borda' },
-  { id:'invert',    name:'Invertido', bg:'#fff',    info:'Cores invertidas' },
+const EP_PER_PAGE = 40;
+let epCatKey = Object.keys(EP_CATS)[0];
+let epPageIdx = 0;
+
+// ══════════════════════════════════════════════
+// MODES
+// ══════════════════════════════════════════════
+const MODES=[
+  {id:'sistema',  name:'Sistema',   bg:'#1a1a2e'},
+  {id:'twemoji',  name:'Twemoji',   bg:'#dde4ff'},
+  {id:'mono',     name:'Mono',      bg:'#111'},
+  {id:'sepia',    name:'Sépia',     bg:'#1a1208'},
+  {id:'neon',     name:'Neon',      bg:'#04040e'},
+  {id:'silhouette',name:'Silhueta', bg:'#080808'},
+  {id:'outline',  name:'Contorno',  bg:'#060606'},
+  {id:'invert',   name:'Invertido', bg:'#eee'},
 ];
+const NEON_COLS=['#7c6af7','#f76ac8','#6af7d4','#f7d46a','#6af77c','#f76a6a','#6ab5f7','#ff8855'];
+const SIL_COLS=['#ffffff','#e0d0ff','#ffd0e0','#d0f0ff','#d0ffd8','#ffeed0','#ffff44','#ff4488'];
+const OL_COLS=['#ffffff','#7c6af7','#f76ac8','#6af7d4','#ffdd44','#ff5555','#55ff99'];
+const SWATCHES_DATA=['#0f0f14','#1a1a2e','#12192c','#0d1b2a','#1e0a1e','#1a0a2e','#0a1a2e','#0a2e1a','#2e0a0a','#1e1e00','#ffffff','#f5f0ff','#fce4ec','#e8f5e9','#e3f2fd','#fff8e1'];
 
-const NEON_COLS   = ['#7c6af7','#f76ac8','#6af7d4','#f7d46a','#6af77c','#f76a6a','#6ab5f7','#ff8855'];
-const SIL_COLS    = ['#ffffff','#e0d0ff','#ffd0e0','#d0f0ff','#d0ffd8','#ffeed0','#ffff44','#ff4488'];
-const OUTLINE_COLS= ['#ffffff','#7c6af7','#f76ac8','#6af7d4','#ffdd44','#ff5555','#55ff99'];
-
-// ── IMAGE CACHE ────────────────────────────────────────
-const imgCache = new Map();
-
-function emojiCP(emoji) {
-  return [...emoji].map(c=>c.codePointAt(0)).filter(cp=>cp!==0xFE0F).map(cp=>cp.toString(16)).join('-');
-}
-function twUrl(emoji){ return `https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/${emojiCP(emoji)}.png`; }
-
+// ══════════════════════════════════════════════
+// IMAGE CACHE (Twemoji)
+// ══════════════════════════════════════════════
+const imgCache=new Map();
+function emojiCP(e){return[...e].map(c=>c.codePointAt(0)).filter(cp=>cp!==0xFE0F).map(cp=>cp.toString(16)).join('-');}
+function twUrl(e){return`https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/${emojiCP(e)}.png`;}
 function loadImg(url){
-  if(imgCache.has(url)) return Promise.resolve(imgCache.get(url));
-  return new Promise(res=>{
-    const img=new Image(); img.crossOrigin='anonymous';
-    img.onload=()=>{imgCache.set(url,img);res(img);};
-    img.onerror=()=>{imgCache.set(url,null);res(null);};
-    img.src=url;
-  });
+  if(imgCache.has(url))return Promise.resolve(imgCache.get(url));
+  return new Promise(r=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>{imgCache.set(url,i);r(i);};i.onerror=()=>{imgCache.set(url,null);r(null);};i.src=url;});
 }
-async function preloadTw(emojis){ return Promise.all(emojis.map(e=>loadImg(twUrl(e)))); }
+async function preloadTw(ems){return Promise.all(ems.map(e=>loadImg(twUrl(e))));}
 
-// ── SILHOUETTE & OUTLINE ───────────────────────────────
-function drawSil(ctx, emoji, x, y, size, color){
-  const off=document.createElement('canvas');
-  const pad=size*0.3;
-  off.width=off.height=size*2+pad*2;
-  const oc=off.getContext('2d');
-  oc.font=`${size}px serif`; oc.textBaseline='middle'; oc.textAlign='center';
-  oc.fillText(emoji, off.width/2, off.height/2);
-  oc.globalCompositeOperation='source-in';
-  oc.fillStyle=color;
-  oc.fillRect(0,0,off.width,off.height);
-  ctx.drawImage(off, x-off.width/2, y-off.height/2);
-}
-
-function drawOutl(ctx, emoji, x, y, size, color, lw){
-  ctx.font=`${size}px serif`; ctx.textBaseline='middle'; ctx.textAlign='center';
-  ctx.strokeStyle=color; ctx.lineWidth=lw; ctx.lineJoin='round';
-  ctx.strokeText(emoji, x, y);
-}
-
-// ── CANVAS ─────────────────────────────────────────────
+// ══════════════════════════════════════════════
+// CANVAS
+// ══════════════════════════════════════════════
 const canvas=document.getElementById('previewCanvas');
 const ctx=canvas.getContext('2d');
 const phoneFrame=document.getElementById('phoneFrame');
 
 function setPreviewSize(){
-  const maxW=Math.min(window.innerWidth*0.45,180);
+  const maxW=Math.min(window.innerWidth*0.44,170);
   phoneFrame.style.width=maxW+'px';
-  canvas.width=S.resW; canvas.height=S.resH;
+  canvas.width=S.resW;canvas.height=S.resH;
   canvas.style.width=maxW+'px';
   canvas.style.height=(maxW*S.resH/S.resW)+'px';
 }
 
-// ── INIT ───────────────────────────────────────────────
-function init(){
-  buildModes(); buildNeonDots(); buildSilDots(); buildOutlineDots();
-  renderSwatches(); renderQuick(); renderChips(); updateSliders();
-  setPreviewSize(); render();
+// ══════════════════════════════════════════════
+// PWA
+// ══════════════════════════════════════════════
+let deferredPrompt=null;
+
+// Generate app icon via canvas
+function makeIcon(size){
+  const c=document.createElement('canvas');c.width=c.height=size;
+  const cx=c.getContext('2d');
+  const g=cx.createLinearGradient(0,0,size,size);
+  g.addColorStop(0,'#7c6af7');g.addColorStop(1,'#f76ac8');
+  cx.fillStyle=g;cx.beginPath();cx.roundRect(0,0,size,size,size*0.22);cx.fill();
+  cx.font=`${size*0.55}px serif`;cx.textAlign='center';cx.textBaseline='middle';
+  cx.fillText('🎨',size/2,size/2);
+  return c.toDataURL('image/png');
 }
 
-// ── PANELS ─────────────────────────────────────────────
-function togglePanel(h){ h.classList.toggle('open'); h.nextElementSibling.classList.toggle('open'); }
+function setupPWA(){
+  const icon192=makeIcon(192);
+  const icon512=makeIcon(512);
+  const manifest={
+    name:'EmojiWall',short_name:'EmojiWall',
+    description:'Cria wallpapers de emojis para Android',
+    start_url:'./',display:'standalone',
+    orientation:'portrait',
+    background_color:'#0f0f14',theme_color:'#7c6af7',
+    icons:[
+      {src:icon192,sizes:'192x192',type:'image/png',purpose:'any maskable'},
+      {src:icon512,sizes:'512x512',type:'image/png',purpose:'any maskable'},
+    ]
+  };
+  const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  document.getElementById('manifestLink').href=URL.createObjectURL(mBlob);
+}
 
-// ── EMOJIS ─────────────────────────────────────────────
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('installBtn').classList.add('show');
+});
+
+window.addEventListener('appinstalled',()=>{
+  document.getElementById('installBtn').classList.remove('show');
+  showToast('✅ App instalada com sucesso!');
+  deferredPrompt=null;
+});
+
+async function installPWA(){
+  if(!deferredPrompt){
+    showToast('💡 Usa o menu do browser → "Adicionar ao ecrã inicial"');
+    return;
+  }
+  deferredPrompt.prompt();
+  const {outcome}=await deferredPrompt.userChoice;
+  if(outcome==='accepted') showToast('🎉 A instalar…');
+  deferredPrompt=null;
+}
+
+function setupSW(){
+  // SW requires a real hosted file — not possible from a local HTML file.
+  // Install prompt and offline still work via beforeinstallprompt.
+}
+
+// ══════════════════════════════════════════════
+// PANELS
+// ══════════════════════════════════════════════
+function togglePanel(h){h.classList.toggle('open');h.nextElementSibling.classList.toggle('open');}
+
+// ══════════════════════════════════════════════
+// CHIPS
+// ══════════════════════════════════════════════
 function renderChips(){
-  document.getElementById('emojiChips').innerHTML=S.emojis.map((e,i)=>
-    `<div class="emoji-chip" onclick="removeEmoji(${i})">${e}<div class="remove">✕</div></div>`
+  document.getElementById('chips').innerHTML=S.emojis.map((e,i)=>
+    `<div class="chip" onclick="removeEmoji(${i})">${e}<div class="rm">✕</div></div>`
   ).join('');
 }
 function addEmoji(){
-  const inp=document.getElementById('emojiInput'), val=inp.value.trim();
+  const inp=document.getElementById('emojiInput'),val=inp.value.trim();
   if(!val)return;
   [...new Intl.Segmenter().segment(val)].map(s=>s.segment).filter(s=>s.trim()).forEach(e=>{if(!S.emojis.includes(e))S.emojis.push(e);});
-  inp.value=''; renderChips(); refreshModePreviews(); render();
+  inp.value='';renderChips();refreshModePreviews();render();
 }
-function removeEmoji(i){ S.emojis.splice(i,1); if(!S.emojis.length)S.emojis.push('😊'); renderChips(); refreshModePreviews(); render(); }
-function renderQuick(){ document.getElementById('quickEmojis').innerHTML=QUICK.map(e=>`<div class="quick-emoji" onclick="quickAdd('${e}')">${e}</div>`).join(''); }
-function quickAdd(e){ if(!S.emojis.includes(e)){S.emojis.push(e);renderChips();refreshModePreviews();render();} }
+function removeEmoji(i){S.emojis.splice(i,1);if(!S.emojis.length)S.emojis.push('😊');renderChips();refreshModePreviews();render();}
 document.getElementById('emojiInput').addEventListener('keydown',e=>{if(e.key==='Enter')addEmoji();});
 
-// ── MODE CARDS ─────────────────────────────────────────
+// ══════════════════════════════════════════════
+// EMOJIPEDIA
+// ══════════════════════════════════════════════
+function buildEpCats(){
+  const cats=document.getElementById('epCats');
+  cats.innerHTML=Object.keys(EP_CATS).map(k=>
+    `<div class="ep-cat ${k===epCatKey?'active':''}" onclick="selectEpCat('${k}')">${k}</div>`
+  ).join('');
+}
+
+function selectEpCat(k){
+  epCatKey=k;epPageIdx=0;
+  document.querySelectorAll('.ep-cat').forEach(c=>c.classList.toggle('active',c.textContent===k));
+  renderEpGrid();
+}
+
+function renderEpGrid(){
+  const all=EP_CATS[epCatKey];
+  const total=Math.ceil(all.length/EP_PER_PAGE);
+  const slice=all.slice(epPageIdx*EP_PER_PAGE,(epPageIdx+1)*EP_PER_PAGE);
+  document.getElementById('epGrid').innerHTML=slice.map(e=>
+    `<div class="ep-em ${S.emojis.includes(e)?'selected':''}" onclick="toggleEpEmoji('${e}')">${e}</div>`
+  ).join('');
+  document.getElementById('pgInfo').textContent=`${epPageIdx+1} / ${total}`;
+  document.getElementById('prevPg').disabled=epPageIdx===0;
+  document.getElementById('nextPg').disabled=epPageIdx>=total-1;
+}
+
+function epPage(dir){
+  const all=EP_CATS[epCatKey];
+  const total=Math.ceil(all.length/EP_PER_PAGE);
+  epPageIdx=Math.max(0,Math.min(total-1,epPageIdx+dir));
+  renderEpGrid();
+}
+
+function toggleEpEmoji(e){
+  if(S.emojis.includes(e)){
+    const i=S.emojis.indexOf(e);S.emojis.splice(i,1);
+    if(!S.emojis.length)S.emojis.push('😊');
+  } else {
+    S.emojis.push(e);
+  }
+  renderChips();renderEpGrid();refreshModePreviews();render();
+}
+
+// ══════════════════════════════════════════════
+// MODES
+// ══════════════════════════════════════════════
 function buildModes(){
-  document.getElementById('modeScroll').innerHTML=MODES.map(m=>`
-    <div class="mode-card ${m.id===S.mode?'active':''}" data-mode="${m.id}" onclick="selectMode('${m.id}')">
-      <div class="mode-preview" style="background:${m.bg}" id="mp-${m.id}">
-        <canvas id="mc-${m.id}" width="60" height="60"></canvas>
+  document.getElementById('modeRow').innerHTML=MODES.map(m=>`
+    <div class="mcard ${m.id===S.mode?'active':''}" data-mode="${m.id}" onclick="selMode('${m.id}')">
+      <div class="mpreview" style="background:${m.bg}" id="mp-${m.id}">
+        <canvas id="mc-${m.id}" width="56" height="56"></canvas>
       </div>
-      <div class="mode-name">${m.name}</div>
+      <div class="mname">${m.name}</div>
     </div>`).join('');
   setTimeout(()=>MODES.forEach(m=>drawModeCard(m)),80);
 }
 
 function drawModeCard(m){
-  const mc=document.getElementById('mc-'+m.id); if(!mc)return;
-  const mctx=mc.getContext('2d');
-  mctx.clearRect(0,0,60,60);
-  const em=S.emojis[0]||'✨', sz=34;
-
+  const mc=document.getElementById('mc-'+m.id);if(!mc)return;
+  const mctx=mc.getContext('2d');mctx.clearRect(0,0,56,56);
+  const em=S.emojis[0]||'✨',sz=32;
   if(m.id==='twemoji'){
-    loadImg(twUrl(em)).then(img=>{
-      mctx.clearRect(0,0,60,60);
-      if(img) mctx.drawImage(img,6,6,48,48);
-      else{ mctx.font=`${sz}px serif`;mctx.textBaseline='middle';mctx.textAlign='center';mctx.fillText(em,30,30); }
-    }); return;
+    loadImg(twUrl(em)).then(img=>{mctx.clearRect(0,0,56,56);if(img)mctx.drawImage(img,4,4,48,48);else{mctx.font=`${sz}px serif`;mctx.textBaseline='middle';mctx.textAlign='center';mctx.fillText(em,28,28);}});return;
   }
-  if(m.id==='silhouette'){ drawSil(mctx,em,30,30,sz,S.silColor); return; }
-  if(m.id==='outline'){ drawOutl(mctx,em,30,30,sz,S.outlineColor,S.outlineWidth*0.7); return; }
-  if(m.id==='neon'){ mctx.shadowColor=S.neonColor; mctx.shadowBlur=14; }
-  const filters={mono:'grayscale(1) contrast(1.1)',sepia:'sepia(1)',invert:'invert(1)'};
-  if(filters[m.id]) mctx.filter=filters[m.id];
-  mctx.font=`${sz}px serif`; mctx.textBaseline='middle'; mctx.textAlign='center';
-  mctx.fillText(em,30,30);
-  mctx.filter='none'; mctx.shadowBlur=0;
+  if(m.id==='silhouette'){drawSil(mctx,em,28,28,sz,S.silColor);return;}
+  if(m.id==='outline'){drawOutl(mctx,em,28,28,sz,S.outlineColor,S.outlineWidth*.7);return;}
+  if(m.id==='neon'){mctx.shadowColor=S.neonColor;mctx.shadowBlur=14;}
+  const fs={mono:'grayscale(1) contrast(1.1)',sepia:'sepia(1)',invert:'invert(1)'};
+  if(fs[m.id])mctx.filter=fs[m.id];
+  mctx.font=`${sz}px serif`;mctx.textBaseline='middle';mctx.textAlign='center';mctx.fillText(em,28,28);
+  mctx.filter='none';mctx.shadowBlur=0;
 }
 
-function refreshModePreviews(){ MODES.forEach(m=>drawModeCard(m)); }
+function refreshModePreviews(){MODES.forEach(m=>drawModeCard(m));}
 
-function selectMode(id){
+function selMode(id){
   S.mode=id;
-  document.querySelectorAll('.mode-card').forEach(c=>c.classList.toggle('active',c.dataset.mode===id));
-  document.querySelectorAll('.mode-opts-section').forEach(s=>s.classList.remove('visible'));
-  const opt=document.getElementById('opts-'+id); if(opt)opt.classList.add('visible');
+  document.querySelectorAll('.mcard').forEach(c=>c.classList.toggle('active',c.dataset.mode===id));
+  document.querySelectorAll('.mopt-sec').forEach(s=>s.classList.remove('vis'));
+  const opt=document.getElementById('opts-'+id);if(opt)opt.classList.add('vis');
   render();
 }
 
-// ── NEON DOTS ──────────────────────────────────────────
-function buildNeonDots(){
-  document.getElementById('neonColorDots').innerHTML=NEON_COLS.map(c=>
-    `<div class="cdot round ${c===S.neonColor?'active':''}" style="background:${c};box-shadow:0 0 8px ${c}" onclick="setNeonCol('${c}',this)"></div>`
+// ══════════════════════════════════════════════
+// MODE OPTIONS
+// ══════════════════════════════════════════════
+function buildDots(containerId,colors,active,onClick,round=false){
+  document.getElementById(containerId).innerHTML=colors.map(c=>
+    `<div class="cdot ${round?'rnd':''} ${c===active?'active':''}" style="background:${c}${round?';box-shadow:0 0 8px '+c:''}" onclick="${onClick}('${c}',this)"></div>`
   ).join('');
 }
-function setNeonCol(c,el){ S.neonColor=c; document.querySelectorAll('#neonColorDots .cdot').forEach(d=>d.classList.remove('active')); el.classList.add('active'); refreshModePreviews(); render(); }
-function onNeonBlur(){ S.neonBlur=+document.getElementById('neonBlurSlider').value; document.getElementById('neonBlurVal').textContent=S.neonBlur; render(); }
+function buildNeonDots(){buildDots('neonDots',NEON_COLS,S.neonColor,'setNeonCol',true);}
+function buildSilDots(){buildDots('silDots',SIL_COLS,S.silColor,'setSilColor');}
+function buildOutlineDots(){buildDots('outlineDots',OL_COLS,S.outlineColor,'setOutlineCol');}
 
-// ── SILHOUETTE DOTS ────────────────────────────────────
-function buildSilDots(){
-  document.getElementById('silColorDots').innerHTML=SIL_COLS.map(c=>
-    `<div class="cdot ${c===S.silColor?'active':''}" style="background:${c}" onclick="setSilColor('${c}',this)"></div>`
-  ).join('');
+function setNeonCol(c,el){S.neonColor=c;document.querySelectorAll('#neonDots .cdot').forEach(d=>d.classList.remove('active'));el.classList.add('active');refreshModePreviews();render();}
+function onNeonBlur(){S.neonBlur=+document.getElementById('neonBlurS').value;document.getElementById('neonBlurV').textContent=S.neonBlur;render();}
+function setSilColor(c,el){S.silColor=c;document.querySelectorAll('#silDots .cdot').forEach(d=>d.classList.remove('active'));if(el)el.classList.add('active');document.getElementById('silCustom').value=c;refreshModePreviews();render();}
+function setOutlineCol(c,el){S.outlineColor=c;document.querySelectorAll('#outlineDots .cdot').forEach(d=>d.classList.remove('active'));el.classList.add('active');refreshModePreviews();render();}
+function onOutlineW(){S.outlineWidth=+document.getElementById('outlineWS').value;document.getElementById('outlineWV').textContent=S.outlineWidth+'px';render();}
+
+// ══════════════════════════════════════════════
+// PATTERNS
+// ══════════════════════════════════════════════
+function selPat(btn){
+  document.querySelectorAll('.pat-btn').forEach(b=>{b.style.borderColor='#333';b.style.background='var(--sur2)';});
+  btn.style.borderColor='var(--acc)';btn.style.background='rgba(124,106,247,.15)';
+  S.pattern=btn.dataset.p;render();
 }
-function setSilColor(c,el){ S.silColor=c; document.querySelectorAll('#silColorDots .cdot').forEach(d=>d.classList.remove('active')); if(el)el.classList.add('active'); document.getElementById('silCustomColor').value=c; refreshModePreviews(); render(); }
+// init active state
+document.querySelector('.pat-btn.active').style.borderColor='var(--acc)';
+document.querySelector('.pat-btn.active').style.background='rgba(124,106,247,.15)';
 
-// ── OUTLINE DOTS ───────────────────────────────────────
-function buildOutlineDots(){
-  document.getElementById('outlineColorDots').innerHTML=OUTLINE_COLS.map(c=>
-    `<div class="cdot ${c===S.outlineColor?'active':''}" style="background:${c}" onclick="setOutlineCol('${c}',this)"></div>`
-  ).join('');
-}
-function setOutlineCol(c,el){ S.outlineColor=c; document.querySelectorAll('#outlineColorDots .cdot').forEach(d=>d.classList.remove('active')); el.classList.add('active'); refreshModePreviews(); render(); }
-function onOutlineW(){ S.outlineWidth=+document.getElementById('outlineWSlider').value; document.getElementById('outlineWVal').textContent=S.outlineWidth+'px'; render(); }
+const pBtns=document.querySelectorAll('.pat-btn');let pIdx=0;
+function cyclePattern(){pIdx=(pIdx+1)%pBtns.length;selPat(pBtns[pIdx]);}
 
-// ── PATTERNS ───────────────────────────────────────────
-function selectPattern(btn){ document.querySelectorAll('.pattern-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); S.pattern=btn.dataset.pattern; render(); }
-const pBtns=document.querySelectorAll('.pattern-btn'); let pIdx=0;
-function cyclePattern(){ pIdx=(pIdx+1)%pBtns.length; selectPattern(pBtns[pIdx]); }
-
-// ── SLIDERS ────────────────────────────────────────────
-function updateSliders(){
-  S.size=+document.getElementById('sizeSlider').value;
-  S.variation=+document.getElementById('variationSlider').value;
-  S.spacing=+document.getElementById('spacingSlider').value;
-  S.rotation=+document.getElementById('rotationSlider').value;
-  S.opacity=+document.getElementById('opacitySlider').value;
-  document.getElementById('sizeVal').textContent=S.size+'px';
-  document.getElementById('variationVal').textContent=S.variation+'%';
-  document.getElementById('spacingVal').textContent=(S.spacing/100).toFixed(1)+'×';
-  document.getElementById('rotationVal').textContent=S.rotation+'°';
-  document.getElementById('opacityVal').textContent=S.opacity+'%';
+// ══════════════════════════════════════════════
+// SLIDERS
+// ══════════════════════════════════════════════
+function updSliders(){
+  S.size=+document.getElementById('sizeS').value;
+  S.variation=+document.getElementById('varS').value;
+  S.spacing=+document.getElementById('spcS').value;
+  S.rotation=+document.getElementById('rotS').value;
+  S.opacity=+document.getElementById('opS').value;
+  document.getElementById('sizeV').textContent=S.size+'px';
+  document.getElementById('varV').textContent=S.variation+'%';
+  document.getElementById('spcV').textContent=(S.spacing/100).toFixed(1)+'×';
+  document.getElementById('rotV').textContent=S.rotation+'°';
+  document.getElementById('opV').textContent=S.opacity+'%';
   render();
 }
 
-// ── BG COLORS ──────────────────────────────────────────
+// ══════════════════════════════════════════════
+// BG COLORS
+// ══════════════════════════════════════════════
 function renderSwatches(){
-  document.getElementById('swatches').innerHTML=SWATCHES.map(c=>
-    `<div class="swatch ${c===S.bgColor?'active':''}" style="background:${c}" onclick="setBg('${c}',this)"></div>`
+  document.getElementById('swatches').innerHTML=SWATCHES_DATA.map(c=>
+    `<div class="sw ${c===S.bgColor?'active':''}" style="background:${c}" onclick="setBg('${c}',this)"></div>`
   ).join('');
 }
-function setBg(c,el){ S.bgColor=c; document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active')); el.classList.add('active'); document.getElementById('customColor').value=c; render(); }
-function setCustomColor(c){ S.bgColor=c; document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active')); render(); }
-function toggleGradient(){ S.useGradient=!S.useGradient; document.getElementById('gradientToggle').classList.toggle('on',S.useGradient); document.getElementById('gradientColors').style.display=S.useGradient?'flex':'none'; render(); }
+function setBg(c,el){S.bgColor=c;document.querySelectorAll('.sw').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('customColor').value=c;render();}
+function setCustomColor(c){S.bgColor=c;document.querySelectorAll('.sw').forEach(s=>s.classList.remove('active'));render();}
+function toggleGrad(){S.useGrad=!S.useGrad;document.getElementById('gradTog').classList.toggle('on',S.useGrad);document.getElementById('gradCols').style.display=S.useGrad?'flex':'none';render();}
 
-// ── RESOLUTION ─────────────────────────────────────────
-function selectRes(btn){ document.querySelectorAll('.res-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); S.resW=+btn.dataset.w; S.resH=+btn.dataset.h; setPreviewSize(); render(); }
+// ══════════════════════════════════════════════
+// RESOLUTION
+// ══════════════════════════════════════════════
+function selRes(btn){document.querySelectorAll('.rbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');S.resW=+btn.dataset.w;S.resH=+btn.dataset.h;setPreviewSize();render();}
 
-// ── RNG ────────────────────────────────────────────────
-function rng42(seed){ let s=seed; return ()=>{ s=(s*1664525+1013904223)&0xffffffff; return (s>>>0)/0xffffffff; }; }
-function shufflePositions(){ S.seed=Math.random(); render(); }
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function drawSil(ctx,emoji,x,y,size,color){
+  const off=document.createElement('canvas');const pad=size*.3;off.width=off.height=size*2+pad*2;
+  const oc=off.getContext('2d');oc.font=`${size}px serif`;oc.textBaseline='middle';oc.textAlign='center';
+  oc.fillText(emoji,off.width/2,off.height/2);
+  oc.globalCompositeOperation='source-in';oc.fillStyle=color;oc.fillRect(0,0,off.width,off.height);
+  ctx.drawImage(off,x-off.width/2,y-off.height/2);
+}
+function drawOutl(ctx,emoji,x,y,size,color,lw){
+  ctx.font=`${size}px serif`;ctx.textBaseline='middle';ctx.textAlign='center';
+  ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineJoin='round';ctx.strokeText(emoji,x,y);
+}
 
-// ── POSITIONS ──────────────────────────────────────────
+function rng42(seed){let s=seed;return()=>{s=(s*1664525+1013904223)&0xffffffff;return(s>>>0)/0xffffffff;};}
+function shufflePositions(){S.seed=Math.random();render();}
+
 function getPositions(W,H,step){
-  const pos=[], rng=rng42((S.seed*999999)|0);
+  const pos=[],rng=rng42((S.seed*999999)|0);
   switch(S.pattern){
-    case 'grid':
-      for(let y=step*.5;y<H+step;y+=step) for(let x=step*.5;x<W+step;x+=step) pos.push({x,y}); break;
-    case 'offset':{ let row=0; for(let y=step*.5;y<H+step;y+=step*.866){const ox=(row%2)*step*.5; for(let x=ox+step*.5;x<W+step;x+=step)pos.push({x,y}); row++;} break;}
-    case 'random':{ const n=Math.floor((W*H)/(step*step*1.2)); for(let i=0;i<n;i++)pos.push({x:rng()*W,y:rng()*H}); break;}
-    case 'diagonal':{ const ds=step*1.1; for(let d=-H;d<W+H;d+=ds)for(let t=0;t<W+H;t+=ds){const x=d+t*.5,y=t*.866; if(x>=-step&&x<=W+step&&y>=-step&&y<=H+step)pos.push({x,y});} break;}
-    case 'hex':{ let row=0; for(let y=step*.5;y<H+step;y+=step*.866){const ox=(row%2)*step*.5; for(let x=ox;x<W+step;x+=step)pos.push({x,y}); row++;} break;}
-    case 'spiral':{ const cx=W/2,cy=H/2,maxR=Math.sqrt(cx*cx+cy*cy)+step; for(let a=0;a<maxR/(step*.12);a+=.35){const r=a*step*.12,x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r; if(x>=-step&&x<=W+step&&y>=-step&&y<=H+step)pos.push({x,y});} break;}
+    case 'grid': for(let y=step*.5;y<H+step;y+=step)for(let x=step*.5;x<W+step;x+=step)pos.push({x,y});break;
+    case 'offset':{let row=0;for(let y=step*.5;y<H+step;y+=step*.866){const ox=(row%2)*step*.5;for(let x=ox+step*.5;x<W+step;x+=step)pos.push({x,y});row++;}break;}
+    case 'random':{const n=Math.floor((W*H)/(step*step*1.2));for(let i=0;i<n;i++)pos.push({x:rng()*W,y:rng()*H});break;}
+    case 'diagonal':{const ds=step*1.1;for(let d=-H;d<W+H;d+=ds)for(let t=0;t<W+H;t+=ds){const x=d+t*.5,y=t*.866;if(x>=-step&&x<=W+step&&y>=-step&&y<=H+step)pos.push({x,y});}break;}
+    case 'hex':{let row=0;for(let y=step*.5;y<H+step;y+=step*.866){const ox=(row%2)*step*.5;for(let x=ox;x<W+step;x+=step)pos.push({x,y});row++;}break;}
+    case 'spiral':{const cx=W/2,cy=H/2,maxR=Math.sqrt(cx*cx+cy*cy)+step;for(let a=0;a<maxR/(step*.12);a+=.35){const r=a*step*.12,x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r;if(x>=-step&&x<=W+step&&y>=-step&&y<=H+step)pos.push({x,y});}break;}
   }
   return pos;
 }
 
-// ── RENDER ─────────────────────────────────────────────
+// ══════════════════════════════════════════════
+// RENDER (preview only — fast)
+// ══════════════════════════════════════════════
 let _pending=false;
 async function render(){
-  if(_pending)return; _pending=true;
-  await new Promise(r=>setTimeout(r,8)); _pending=false;
+  if(_pending)return;_pending=true;
+  await new Promise(r=>setTimeout(r,8));_pending=false;
+  await doRender(canvas,ctx,S.resW,S.resH);
+}
 
-  const btn=document.getElementById('genBtn'), badge=document.getElementById('renderBadge');
-  const W=S.resW, H=S.resH;
-  canvas.width=W; canvas.height=H;
+async function doRender(targetCanvas,targetCtx,W,H){
+  const badge=document.getElementById('renderBadge');
+  if(S.mode==='twemoji')badge.classList.add('show');
+  targetCanvas.width=W;targetCanvas.height=H;
 
-  if(S.mode==='twemoji'){btn.classList.add('loading');badge.classList.add('show');}
+  if(S.useGrad){
+    const c1=document.getElementById('gc1').value,c2=document.getElementById('gc2').value;
+    const g=targetCtx.createLinearGradient(0,0,W,H);g.addColorStop(0,c1);g.addColorStop(1,c2);
+    targetCtx.fillStyle=g;
+  }else{targetCtx.fillStyle=S.bgColor;}
+  targetCtx.fillRect(0,0,W,H);
 
-  // BG
-  if(S.useGradient){
-    const c1=document.getElementById('gradColor1').value, c2=document.getElementById('gradColor2').value;
-    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,c1); g.addColorStop(1,c2); ctx.fillStyle=g;
-  } else { ctx.fillStyle=S.bgColor; }
-  ctx.fillRect(0,0,W,H);
+  if(!S.emojis.length){badge.classList.remove('show');return;}
 
-  if(!S.emojis.length){btn.classList.remove('loading');badge.classList.remove('show');return;}
-
-  // Preload twemoji
   let twImgs={};
-  if(S.mode==='twemoji'){
-    await preloadTw(S.emojis);
-    S.emojis.forEach(e=>{twImgs[e]=imgCache.get(twUrl(e))||null;});
-  }
+  if(S.mode==='twemoji'){await preloadTw(S.emojis);S.emojis.forEach(e=>{twImgs[e]=imgCache.get(twUrl(e))||null;});}
 
   const baseSize=Math.round((S.size/180)*W*0.18);
   const step=Math.round(baseSize*(S.spacing/100)*1.5);
   const varF=S.variation/100;
   const rng=rng42((S.seed*999999)|0);
   const positions=getPositions(W,H,step);
-
-  ctx.globalAlpha=S.opacity/100;
+  targetCtx.globalAlpha=S.opacity/100;
 
   for(let i=0;i<positions.length;i++){
-    const {x,y}=positions[i];
+    const{x,y}=positions[i];
     const em=S.emojis[i%S.emojis.length];
     const sz=Math.max(10,Math.round(baseSize*(1+(rng()*2-1)*varF)));
     const angle=S.rotation>0?(rng()*2-1)*(S.rotation*Math.PI/180):0;
-
-    ctx.save();
-    ctx.translate(x,y);
-    if(angle)ctx.rotate(angle);
-
+    targetCtx.save();targetCtx.translate(x,y);if(angle)targetCtx.rotate(angle);
     switch(S.mode){
-      case 'sistema':
-        ctx.font=`${sz}px serif`; ctx.textBaseline='middle'; ctx.textAlign='center';
-        ctx.fillText(em,0,0); break;
-
-      case 'twemoji':{
-        const img=twImgs[em];
-        if(img) ctx.drawImage(img,-sz/2,-sz/2,sz,sz);
-        else{ ctx.font=`${sz}px serif`;ctx.textBaseline='middle';ctx.textAlign='center';ctx.fillText(em,0,0); }
-        break;
-      }
-
-      case 'mono':
-        ctx.filter='grayscale(1) contrast(1.1)';
-        ctx.font=`${sz}px serif`;ctx.textBaseline='middle';ctx.textAlign='center';
-        ctx.fillText(em,0,0); ctx.filter='none'; break;
-
-      case 'sepia':
-        ctx.filter='sepia(1) brightness(0.9)';
-        ctx.font=`${sz}px serif`;ctx.textBaseline='middle';ctx.textAlign='center';
-        ctx.fillText(em,0,0); ctx.filter='none'; break;
-
-      case 'neon':
-        for(let p=0;p<3;p++){
-          ctx.shadowColor=S.neonColor; ctx.shadowBlur=S.neonBlur*(p+1)*.55;
-          ctx.font=`${sz}px serif`;ctx.textBaseline='middle';ctx.textAlign='center';
-          ctx.fillText(em,0,0);
-        }
-        ctx.shadowBlur=0; break;
-
-      case 'silhouette':
-        ctx.restore(); ctx.save(); ctx.translate(x,y); if(angle)ctx.rotate(angle);
-        ctx.globalAlpha=S.opacity/100;
-        drawSil(ctx,em,0,0,sz,S.silColor); break;
-
-      case 'outline':
-        ctx.restore(); ctx.save(); ctx.translate(x,y); if(angle)ctx.rotate(angle);
-        ctx.globalAlpha=S.opacity/100;
-        drawOutl(ctx,em,0,0,sz,S.outlineColor,S.outlineWidth); break;
-
-      case 'invert':
-        ctx.filter='invert(1)';
-        ctx.font=`${sz}px serif`;ctx.textBaseline='middle';ctx.textAlign='center';
-        ctx.fillText(em,0,0); ctx.filter='none'; break;
+      case 'sistema': targetCtx.font=`${sz}px serif`;targetCtx.textBaseline='middle';targetCtx.textAlign='center';targetCtx.fillText(em,0,0);break;
+      case 'twemoji':{const img=twImgs[em];if(img)targetCtx.drawImage(img,-sz/2,-sz/2,sz,sz);else{targetCtx.font=`${sz}px serif`;targetCtx.textBaseline='middle';targetCtx.textAlign='center';targetCtx.fillText(em,0,0);}break;}
+      case 'mono': targetCtx.filter='grayscale(1) contrast(1.1)';targetCtx.font=`${sz}px serif`;targetCtx.textBaseline='middle';targetCtx.textAlign='center';targetCtx.fillText(em,0,0);targetCtx.filter='none';break;
+      case 'sepia': targetCtx.filter='sepia(1) brightness(.9)';targetCtx.font=`${sz}px serif`;targetCtx.textBaseline='middle';targetCtx.textAlign='center';targetCtx.fillText(em,0,0);targetCtx.filter='none';break;
+      case 'neon': for(let p=0;p<3;p++){targetCtx.shadowColor=S.neonColor;targetCtx.shadowBlur=S.neonBlur*(p+1)*.55;targetCtx.font=`${sz}px serif`;targetCtx.textBaseline='middle';targetCtx.textAlign='center';targetCtx.fillText(em,0,0);}targetCtx.shadowBlur=0;break;
+      case 'silhouette': targetCtx.restore();targetCtx.save();targetCtx.translate(x,y);if(angle)targetCtx.rotate(angle);targetCtx.globalAlpha=S.opacity/100;drawSil(targetCtx,em,0,0,sz,S.silColor);break;
+      case 'outline': targetCtx.restore();targetCtx.save();targetCtx.translate(x,y);if(angle)targetCtx.rotate(angle);targetCtx.globalAlpha=S.opacity/100;drawOutl(targetCtx,em,0,0,sz,S.outlineColor,S.outlineWidth);break;
+      case 'invert': targetCtx.filter='invert(1)';targetCtx.font=`${sz}px serif`;targetCtx.textBaseline='middle';targetCtx.textAlign='center';targetCtx.fillText(em,0,0);targetCtx.filter='none';break;
     }
-    ctx.restore();
+    targetCtx.restore();
   }
-
-  ctx.globalAlpha=1;
-  btn.classList.remove('loading'); badge.classList.remove('show');
+  targetCtx.globalAlpha=1;
+  badge.classList.remove('show');
 }
 
-// ── DOWNLOAD ───────────────────────────────────────────
-async function downloadWallpaper(){
-  await render();
-  const a=document.createElement('a');
-  a.download=`emojiwall-${S.mode}-${Date.now()}.png`;
-  a.href=canvas.toDataURL('image/png'); a.click();
-  showToast('💾 Wallpaper guardado!');
+// ══════════════════════════════════════════════
+// EXPORT — renders at full resolution then downloads
+// ══════════════════════════════════════════════
+async function exportWallpaper(){
+  const btn=document.getElementById('saveBtn');
+  btn.classList.add('loading');
+
+  // Render em canvas de alta resolução
+  const exportCanvas=document.createElement('canvas');
+  const exportCtx=exportCanvas.getContext('2d');
+  await doRender(exportCanvas,exportCtx,S.resW,S.resH);
+
+  exportCanvas.toBlob(blob=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.download=`emojiwall-${S.mode}-${S.resW}x${S.resH}-${Date.now()}.png`;
+    a.href=url;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    btn.classList.remove('loading');
+    showToast('💾 Wallpaper guardado em PNG!');
+  },'image/png');
 }
 
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
-// ── PWA ────────────────────────────────────────────────
-if('serviceWorker' in navigator){
-  const blob=new Blob([`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response(''))));`],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+function init(){
+  setupPWA();
+  setupSW();
+  buildModes();
+  buildNeonDots();buildSilDots();buildOutlineDots();
+  renderSwatches();
+  buildEpCats();renderEpGrid();
+  renderChips();
+  updSliders();
+  setPreviewSize();
+  render();
 }
-const mBlob=new Blob([JSON.stringify({name:'EmojiWall',short_name:'EmojiWall',start_url:'.',display:'standalone',background_color:'#0f0f14',theme_color:'#7c6af7',icons:[{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎨</text></svg>',sizes:'512x512',type:'image/svg+xml'}]})],{type:'application/json'});
-document.querySelector('link[rel=manifest]').href=URL.createObjectURL(mBlob);
-
 init();
 </script>
 </body>
