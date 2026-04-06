@@ -22,6 +22,10 @@
     .install-btn{display:none;align-items:center;gap:6px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:20px;padding:7px 14px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;white-space:nowrap;}
     .install-btn.show{display:flex;}
     .install-btn:active{opacity:.8;}
+    .kofi-btn{display:none;align-items:center;gap:5px;background:#FF5E5B;color:#fff;border-radius:20px;padding:7px 13px;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;text-decoration:none;white-space:nowrap;border:none;cursor:pointer;}
+    .kofi-btn.show{display:flex;}
+    .kofi-btn:active{opacity:.8;}
+
 
     .main{display:flex;flex-direction:column;gap:0;padding-bottom:130px;}
 
@@ -142,6 +146,7 @@
 <header>
   <span>🎨</span>
   <h1>EmojiWall</h1>
+  <a class="kofi-btn show" href="https://ko-fi.com/dferreiramarques" target="_blank" rel="noopener">☕ Apoiar</a>
   <button class="install-btn" id="installBtn" onclick="installPWA()">📲 Instalar App</button>
 </header>
 
