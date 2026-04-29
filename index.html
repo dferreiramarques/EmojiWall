@@ -542,10 +542,19 @@ document.getElementById('emojiInput').addEventListener('keydown',e=>{if(e.key===
 // EMOJIPEDIA
 // ══════════════════════════════════════════════
 function buildEpCats(){
-  const cats=document.getElementById('epCats');
-  cats.innerHTML=Object.keys(EP_CATS).map(k=>
-    `<div class="ep-cat ${k===epCatKey?'active':''}" onclick="selectEpCat('${k}')">${k}</div>`
-  ).join('');
+  try{
+    const cats=document.getElementById('epCats');
+    if(!cats){console.error('No epCats element');return;}
+    const keys=Object.keys(EP_CATS);
+    if(keys.length===0){console.error('No EP_CATS keys');return;}
+    cats.innerHTML=keys.map(k=>
+      `<div class="ep-cat ${k===epCatKey?'active':''}" data-cat="${k}">${k}</div>`
+    ).join('');
+    // Add click handlers after creation
+    Array.from(cats.children).forEach(el=>{
+      el.onclick=()=>selectEpCat(el.dataset.cat);
+    });
+  }catch(e){console.error('buildEpCats error:',e);}
 }
 
 function selectEpCat(k){
@@ -555,15 +564,22 @@ function selectEpCat(k){
 }
 
 function renderEpGrid(){
-  const all=EP_CATS[epCatKey];
-  const total=Math.ceil(all.length/EP_PER_PAGE);
-  const slice=all.slice(epPageIdx*EP_PER_PAGE,(epPageIdx+1)*EP_PER_PAGE);
-  document.getElementById('epGrid').innerHTML=slice.map(e=>
-    `<div class="ep-em ${S.emojis.includes(e)?'selected':''}" onclick="toggleEpEmoji('${e}')">${e}</div>`
-  ).join('');
-  document.getElementById('pgInfo').textContent=`${epPageIdx+1} / ${total}`;
-  document.getElementById('prevPg').disabled=epPageIdx===0;
-  document.getElementById('nextPg').disabled=epPageIdx>=total-1;
+  try{
+    const all=EP_CATS[epCatKey];
+    if(!all){console.error('No category:',epCatKey);return;}
+    const total=Math.ceil(all.length/EP_PER_PAGE);
+    const slice=all.slice(epPageIdx*EP_PER_PAGE,(epPageIdx+1)*EP_PER_PAGE);
+    const grid=document.getElementById('epGrid');
+    if(!grid){console.error('No epGrid');return;}
+    grid.innerHTML=slice.map(e=>
+      `<div class="ep-em ${S.emojis.includes(e)?'selected':''}" data-emoji="${e}" onclick="toggleEpEmoji('${e}')">${e}</div>`
+    ).join('');
+    const pgInfo=document.getElementById('pgInfo');
+    if(pgInfo)pgInfo.textContent=`${epPageIdx+1} / ${total}`;
+    const prev=document.getElementById('prevPg'),next=document.getElementById('nextPg');
+    if(prev)prev.disabled=epPageIdx===0;
+    if(next)next.disabled=epPageIdx>=total-1;
+  }catch(e){console.error('renderEpGrid error:',e);}
 }
 
 function epPage(dir){
@@ -576,10 +592,12 @@ function epPage(dir){
 function toggleEpEmoji(e){
   if(S.emojis.includes(e)){
     const i=S.emojis.indexOf(e);S.emojis.splice(i,1);
-    if(!S.emojis.length)S.emojis.push('😊');
-  } else {
+  }else{
     S.emojis.push(e);
   }
+  if(!S.emojis.length)S.emojis.push('😊');
+  renderChips();renderEpGrid();refreshModePreviews();render();
+}
   renderChips();renderEpGrid();refreshModePreviews();render();
 }
 
@@ -795,16 +813,21 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 // INIT
 // ══════════════════════════════════════════════
 function init(){
-  setupPWA();
-  setupSW();
-  buildModes();
-  buildNeonDots();buildSilDots();buildGlifoDots();
-  renderSwatches();
-  buildEpCats();renderEpGrid();
-  renderChips();
-  updSliders();
-  setPreviewSize();
-  render();
+  try{
+    setupPWA();
+    setupSW();
+    buildModes();
+    buildNeonDots();buildSilDots();buildGlifoDots();
+    renderSwatches();
+    buildEpCats();renderEpGrid();
+    renderChips();
+    updSliders();
+    setPreviewSize();
+    render();
+  }catch(e){
+    console.error('Init error:',e);
+    alert('Error: '+e.message);
+  }
 }
 
 function openFullscreen(){
